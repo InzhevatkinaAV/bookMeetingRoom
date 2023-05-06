@@ -1,0 +1,138 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    &:focus {
+        outline: none;
+    }
+}
+
+body {
+    background-color: #0077FF;
+}
+
+.container {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    margin: 30px 0 70px 0;
+    font-size: 66px;
+    font-weight: 700;
+    &_text {
+        display: inline;
+    }
+    &_highlight {
+        display: inline;
+        margin-left: 25px;
+        color: #FFFFFF;
+    }
+}
+
+select, input {
+    padding: 5px;
+    border-radius: 10px;
+    height: 40px;
+    width: 100px;
+    background: #FFFFFF;
+    border: none;
+    transition: 1s all;
+}
+
+.place {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 900px;
+    color: #FFFFFF;
+    margin-bottom: 30px;
+    #town {
+        width: 200px;
+    }
+}
+
+.date_and_time {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 900px;
+    color: #FFFFFF;
+    margin-bottom: 40px;
+    #date {
+        width: 200px;
+    }
+    #time {
+        width: 323px;
+    }
+}
+
+.comment {
+    color: #FFFFFF;
+    margin-bottom: 40px;
+    &_title {
+        margin-bottom: 10px;
+    }
+    #comment_text {
+        padding: 10px;
+        border-radius: 10px;
+        width: 565px;
+        height: 150px;
+        border: none;
+        resize: none;
+    }
+}
+
+.buttons {
+    position: relative;
+    display: flex;
+    align-items: end;
+    height: 110px;
+    #submit {
+        width: 200px;
+        height: 80px;
+        border-radius: 10px;
+        background: #000000;
+        color: #FFFFFF;
+        font-size: 25px;
+        font-weight: 700;
+        border: 1px solid #000000;
+        transition: 3s all;
+        &:hover {
+            color:#0077FF;
+        }
+    }
+    #clear {
+        width: 100px;
+        height: 50px;
+        border-radius: 10px;
+        margin-left: 20px;
+        font-weight: 700;
+        border: 1px solid #FFFFFF;
+        color: #FFFFFF;
+        background: #0077FF;
+        transition: 2s all;
+        &:hover {
+            background: #FFFFFF;
+            color: #000000;
+        }
+    }
+
+}
+
+.alert {
+    position: absolute;
+    top: 0;
+    font-size: 14px;
+    color: #000000;
+    font-weight: 400;
+}
+
+.invisible {
+    display: none;
+}
+
