@@ -1,18 +1,35 @@
 export function checkFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval) {
-    return (selectTown.value !== 'default' && 
-        selectFloor.value !== 'default' &&
-        selectRoom.value !== 'default' &&
-        inputDate.value &&
-        timeInterval.value != 'default');
+    return (selectTown.value !== 'default' && selectFloor.value !== 'default' &&
+        selectRoom.value !== 'default' && inputDate.value && timeInterval.value != 'default');
 }
 
-export function clearFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment) {
+export function cleanFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment) {
     selectTown.value = 'default';
+    cleanSelect(selectTown);
+
     selectFloor.value = 'default';
+    cleanSelect(selectFloor);
+
     selectRoom.value = 'default';
+    cleanSelect(selectRoom);
+
     inputDate.value = '';
     timeInterval.value = 'default';
+    cleanSelect(timeInterval);
+
+    timeInterval.disabled = true;
+    timeInterval.classList.remove('active_time');
+    timeInterval.classList.add('non-ative_time');
+
     textareaComment.value = '';
+}
+
+function cleanSelect(select) {
+    while (select.childNodes.length > 1)
+        select.removeChild(select.lastChild);
+
+    const option = select.getElementsByTagName('option');
+    option[0].selected = true;
 }
 
 export function blokFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment) {
@@ -30,7 +47,7 @@ export function blokFields(selectTown, selectFloor, selectRoom, inputDate, timeI
     timeInterval.setAttribute("readonly", true);
     timeInterval.style.pointerEvents = 'none';
 
-    textareaComment.setAttribute("readonly", true);
+    textareaComment.setAttribute("readonly", true);   
 }
 
 export function unblokFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment) {

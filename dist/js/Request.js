@@ -35,10 +35,14 @@ export class Request {
         });
 
         const date = new Date(this.date);
-        return (formatter.format(date));
+        return formatter.format(date);
     }
 
     getTime() {
         return this.time;
+    }
+
+    static show(request) {
+        console.log(JSON.stringify(request));
     }
 }

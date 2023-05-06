@@ -23,10 +23,8 @@ export function hiddenMessage() {
 }
 
 export function showConfirmMessage(request) {
-   alert.innerHTML = `Забронирована переговорная 
-   комната №${request.getRoomNumber()} 
-   на ${request.getFloorNumber()} этаже, 
-   башня ${request.getTownName()}. 
+   alert.innerHTML = `Забронирована переговорная комната №${request.getRoomNumber()} 
+   на ${request.getFloorNumber()} этаже, башня ${request.getTownName()}. 
    Дата и время: ${request.getDate()}, 
    ${request.getTime()}.`;
    
