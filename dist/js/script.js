@@ -1,6 +1,9 @@
 import {init, initTimeInterval} from './initial.js';
 import { Request } from './Request.js';
-import {checkFields, pastInterval, blokFields, unblokFields, cleanFields, switchTitles} from './fields.js';
+import {checkFields, 
+	blokFields, blokTimeInterval, unblokFields, 
+	cleanFields, switchTitles, 
+	isPastTime, isFarFutureTime} from './fields.js';
 import {showHelpMessage, hiddenMessage, showConfirmMessage} from './messages.js';
 
 const selectTown = document.getElementById('town');
@@ -18,11 +21,14 @@ const buttonClean = document.getElementById('clean');
 init(selectTown, selectFloor, selectRoom, inputDate);
 
 inputDate.addEventListener('change', function() {
-	initTimeInterval(timeInterval, inputDate);
+	if (!isPastTime(inputDate, timeInterval) && !isFarFutureTime(inputDate))
+		initTimeInterval(timeInterval, inputDate);
+	else 
+		blokTimeInterval(timeInterval);	
 });
 
 buttonSubmit.addEventListener('click', function() {
-	if (checkFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval) && !pastInterval(inputDate, timeInterval)) {
+	if (checkFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval)) {
 		switchTitles(true);
 
 		const request = new Request(selectTown.value, selectFloor.value, selectRoom.value, inputDate.value, timeInterval.value, textareaComment.value);
@@ -33,13 +39,8 @@ buttonSubmit.addEventListener('click', function() {
 
 		changeButtonSubmit('active_btn', 'non-active_btn', true);
 	} else {
-		if (pastInterval(inputDate, timeInterval)) {
-			initTimeInterval(timeInterval, inputDate);
-		}
-
-		if (!checkFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval))
-			showHelpMessage([selectTown, selectFloor, selectRoom, inputDate, timeInterval]);
-		}
+		showHelpMessage([selectTown, selectFloor, selectRoom, inputDate, timeInterval]);
+	}
 });
 
 buttonClean.addEventListener('click', function() {

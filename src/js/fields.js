@@ -17,7 +17,7 @@ export function cleanFields(selectTown, selectFloor, selectRoom, inputDate, time
 	timeInterval.value = 'default';
 	cleanSelect(timeInterval);
 
-	timeInterval.disabled = true;
+	// timeInterval.disabled = true;
 	timeInterval.classList.remove('active_time');
 	timeInterval.classList.add('non-ative_time');
 
@@ -49,6 +49,14 @@ export function blokFields(selectTown, selectFloor, selectRoom, inputDate, timeI
 	timeInterval.style.pointerEvents = 'none';
 
 	textareaComment.setAttribute("readonly", true);   
+}
+
+export function blokTimeInterval(timeInterval) {
+	cleanSelect(timeInterval);
+
+	timeInterval.classList.remove('active_time');
+	timeInterval.classList.add('non-ative_time');
+	timeInterval.style.pointerEvents = 'none';
 }
 
 export function unblokFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment) {
@@ -87,31 +95,34 @@ export function switchTitles(flag) {
 	}
 }
 
-export function pastInterval(inputDate, timeInterval) {
+export function isPastTime(inputDate, timeInterval) {
 	const inputDay = Number(inputDate.value.split('-')[2]);
-	const inputMonth = Number(inputDate.value.split('-')[1]);
+	const inputMonth = Number(inputDate.value.split('-')[1]) - 1;
 	const inputYear = Number(inputDate.value.split('-')[0]);
 
-	let currentDate = new Date();
-	const currentDay = currentDate.getDate();
-	const currentMonth = currentDate.getMonth() + 1;
-	const currentYear = currentDate.getFullYear();
-	const currentHours = currentDate.getHours();
-	const currentMinuts = currentDate.getMinutes();
+	const minDay = inputDate.min.split('-')[2];
+	const minMonth = inputDate.min.split('-')[1] - 1;
+	const minYear = inputDate.min.split('-')[0];
 
-	if (timeInterval.value != 'default') {
-		const endInterval = Number(timeInterval.value.split(' ')[2].split(':')[0]);
+	const input = new Date(inputYear, inputMonth, inputDay);
+	const min = new Date(minYear, minMonth, minDay);
 
-		if (inputDay === currentDay && inputMonth === currentMonth && currentHours >= endInterval)
-			return true;
+	if (input < min)
+		return true;
+}
 
-		if (inputDay === currentDay && inputMonth === currentMonth && currentHours + 1 === endInterval)
-			return currentMinuts > 50;
+export function isFarFutureTime(inputDate) {
+	const inputDay = Number(inputDate.value.split('-')[2]);
+	const inputMonth = Number(inputDate.value.split('-')[1]) - 1;
+	const inputYear = Number(inputDate.value.split('-')[0]);
 
-		if ((inputDay < currentDay && inputMonth === currentMonth) ||
-		(inputMonth < currentMonth && inputYear === currentYear) || (inputYear < currentYear))
-			return true;
+	const maxDay = inputDate.max.split('-')[2];
+	const maxMonth = inputDate.max.split('-')[1] - 1;
+	const maxYear = inputDate.max.split('-')[0];
 
-		return false;
-	}
+	const input = new Date(inputYear, inputMonth, inputDay);
+	const max = new Date(maxYear, maxMonth, maxDay);
+
+	if (input > max)
+		return true;
 }

@@ -1,5 +1,5 @@
 import { Request } from './Request.js';
-import { pastInterval } from './fields.js';
+import { isPastTime, isFarFutureTime } from './fields.js';
 
 const alert = document.querySelector('.alert');
 
@@ -11,7 +11,7 @@ export function showHelpMessage(fields) {
 		if (fields[i].value === 'default' || !fields[i].value) {
 			highlightField(fields[i]);
 		}
-		if (i === 3 && pastInterval(fields[3], fields[4])) {
+		if (i === 3 && (isPastTime(fields[3]) || isFarFutureTime(fields[3]))) {
 			highlightField(fields[i]);
 		}
 	}

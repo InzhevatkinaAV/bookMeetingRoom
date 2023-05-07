@@ -98,12 +98,11 @@ export function initTimeInterval(timeInterval, inputDate) {
 	currentDate = new Date();
 	const currentDay = currentDate.getDate();
 	const currentMonth = currentDate.getMonth() + 1;
-	const currentYear = currentDate.getFullYear();
 	const currentHours = currentDate.getHours();
 	const currentMinuts = currentDate.getMinutes();
 
 	for (let interval in timeIntervals) {
-		if (pastTime(interval, inputDay, inputMonth, inputYear, currentDay, currentMonth, currentYear, currentHours, currentMinuts)) 
+		if (pastInterval(interval, inputDay, inputMonth,currentDay, currentMonth, currentHours, currentMinuts)) 
 			continue;
 
 		const option = document.createElement('option');
@@ -119,12 +118,13 @@ export function initTimeInterval(timeInterval, inputDate) {
 		timeInterval.append(option);
 	}
 
-	timeInterval.disabled = false;
+	timeInterval.removeAttribute('readonly');
+	timeInterval.style.pointerEvents = '';
 	timeInterval.classList.remove('non-ative_time');
 	timeInterval.classList.add('active_time');
 }
 
-function pastTime(interval, inputDay, inputMonth, inputYear, currentDay, currentMonth, currentYear, currentHours, currentMinuts) {
+function pastInterval(interval, inputDay, inputMonth, currentDay, currentMonth, currentHours, currentMinuts) {
 	const endInterval = Number(interval.split(' ')[2].split(':')[0]);
 
 	if (inputDay === currentDay && inputMonth === currentMonth && currentHours >= endInterval)
@@ -132,10 +132,6 @@ function pastTime(interval, inputDay, inputMonth, inputYear, currentDay, current
 
 	if (inputDay === currentDay && inputMonth === currentMonth && currentHours + 1 === endInterval)
 		return currentMinuts > 50;
-
-	if ((inputDay < currentDay && inputMonth === currentMonth) ||
-	(inputMonth < currentMonth && inputYear === currentYear) || (inputYear < currentYear))
-		return true;
 
 	return false;
 }
