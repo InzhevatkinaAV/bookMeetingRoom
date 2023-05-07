@@ -1,6 +1,6 @@
 import {init, initTimeInterval} from './initial.js';
 import { Request } from './Request.js';
-import {checkFields, blokFields, unblokFields, cleanFields, switchTitles} from './fields.js';
+import {checkFields, pastInterval, blokFields, unblokFields, cleanFields, switchTitles} from './fields.js';
 import {showHelpMessage, hiddenMessage, showConfirmMessage} from './messages.js';
 
 const selectTown = document.getElementById('town');
@@ -15,43 +15,47 @@ const textareaComment = document.getElementById('comment_text');
 const buttonSubmit = document.getElementById('submit');
 const buttonClean = document.getElementById('clean');
 
-
 init(selectTown, selectFloor, selectRoom, inputDate);
 
 inputDate.addEventListener('change', function() {
-    initTimeInterval(timeInterval, inputDate);
+	initTimeInterval(timeInterval, inputDate);
 });
 
 buttonSubmit.addEventListener('click', function() {
-    if (checkFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval)) {
-        switchTitles(true);
+	if (checkFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval) && !pastInterval(inputDate, timeInterval)) {
+		switchTitles(true);
 
-        const request = new Request(selectTown.value, selectFloor.value, selectRoom.value, inputDate.value, timeInterval.value, textareaComment.value);
-        Request.getJSON(request);
+		const request = new Request(selectTown.value, selectFloor.value, selectRoom.value, inputDate.value, timeInterval.value, textareaComment.value);
+		Request.getJSON(request);
 
-        blokFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment);
-        showConfirmMessage(request);
+		blokFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment);
+		showConfirmMessage(request);
 
-        changeButtonSubmit('active_btn', 'non-active_btn', true);
-    } else 
-        showHelpMessage([selectTown, selectFloor, selectRoom, inputDate, timeInterval]);
+		changeButtonSubmit('active_btn', 'non-active_btn', true);
+	} else {
+		if (pastInterval(inputDate, timeInterval)) {
+			initTimeInterval(timeInterval, inputDate);
+		}
+
+		if (!checkFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval))
+			showHelpMessage([selectTown, selectFloor, selectRoom, inputDate, timeInterval]);
+		}
 });
 
 buttonClean.addEventListener('click', function() {
-    switchTitles(false);
+	switchTitles(false);
 
-    cleanFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment);
-    init(selectTown, selectFloor, selectRoom, inputDate);
-    unblokFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment);
+	cleanFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment);
+	init(selectTown, selectFloor, selectRoom, inputDate);
+	unblokFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment);
 
-    hiddenMessage();
+	hiddenMessage();
 
-    changeButtonSubmit('non-active_btn', 'active_btn', false);
+	changeButtonSubmit('non-active_btn', 'active_btn', false);
 });
 
 function changeButtonSubmit(removeClass, addClass, disabled) {
-    buttonSubmit.disabled = disabled;
-    buttonSubmit.classList.remove(removeClass);
-    buttonSubmit.classList.add(addClass);
+	buttonSubmit.disabled = disabled;
+	buttonSubmit.classList.remove(removeClass);
+	buttonSubmit.classList.add(addClass);
 }
-
