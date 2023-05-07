@@ -1,0 +1,122 @@
+@media (max-width: 950px) {
+    .container {
+        width: 760px;
+    }
+
+    .title {
+        width: 720px;
+        font-size: 45px;
+    }
+
+    .place {
+        width: 720px;
+    }
+
+    .date_and_time {
+        width: 720px;
+        #time {
+            width: 274px;
+        }
+    }
+}
+
+@media (max-width: 760px) {
+    .container {
+        width: 620px;
+    }
+
+    .title {
+        width: 560px;
+        margin: 20px 0 50px 0;
+        font-size: 35px;
+        &_text {
+            margin-right: 15px;
+        }
+    }
+
+    .place {
+        width: 560px;
+        #town {
+            width: 110px;
+        }
+    }
+
+    .date_and_time {
+        width: 560px;
+        #date {
+            width: 110px;
+        }
+        #time {
+            width: 250px;
+        }
+    }
+    
+    .buttons {
+        height: 150px;
+    }
+}
+
+@media (max-width: 620px) {
+    .container {
+        width: 320px;
+    }
+
+    .title {
+        width: 280px;
+        margin: 0 0 40px 0;
+        font-size: 35px;
+        &_text {
+            margin-right: 15px;
+            font-size: 30px;
+        }
+        &_highlight {
+            font-weight: 400;
+        }
+    }
+
+    select, input {
+        height: 35px;
+        width: 280px;
+    }
+
+    .place {
+        font-size: 14px;
+        width: 320px;
+        display: flex;
+        flex-direction: column;
+        align-items:flex-start;
+        justify-content: space-between;
+        height: 170px;
+        margin-bottom: 40px;
+        #town {
+            width: 280px;
+        }
+    }
+
+    .date_and_time {
+        font-size: 14px;
+        width: 320px;
+        display: flex;
+        flex-direction: column;
+        align-items:flex-start;
+        justify-content: space-between;
+        height: 120px;
+        #date {
+            width: 280px;
+        }
+        #time {
+            width: 280px;
+        }
+    }
+
+    .comment {
+        font-size: 14px;
+        #comment_text {
+            width: 280px;
+        }
+    }
+
+    .buttons {
+        height: 180px;
+    }
+}

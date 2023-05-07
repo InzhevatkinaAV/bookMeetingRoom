@@ -1,3 +1,5 @@
+@import '_variables';
+
 * {
 	margin: 0;
 	padding: 0;
@@ -9,7 +11,7 @@
 }
 
 body {
-	background-color: #0077FF;
+	background-color: $main_color;
 }
 
 .container {
@@ -26,12 +28,12 @@ body {
 	font-weight: 700;
 	user-select: none;
 	&_text {
-		display: inline;
+		display: inline-block;
+		margin-right: 25px;
 	}
 	&_highlight {
-		display: inline;
-		margin-left: 25px;
-		color: #FFFFFF;
+		display: inline-block;
+		color: $additional_color;
 	}
 }
 
@@ -40,7 +42,7 @@ select, input {
 	border-radius: 10px;
 	height: 40px;
 	width: 110px;
-	background: #FFFFFF;
+	background: $additional_color;
 	border: none;
 	transition: 1s all;
 	cursor: pointer;
@@ -50,9 +52,9 @@ select, input {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	width: 900px;
-	color: #FFFFFF;
 	margin-bottom: 30px;
+	width: 900px;
+	color: $additional_color;
 	&_title {
 		margin-right: 5px;
 	}
@@ -65,9 +67,9 @@ select, input {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	width: 900px;
-	color:#FFFFFF;
 	margin-bottom: 40px;
+	width: 900px;
+	color:$additional_color;
 	&_title {
 		margin-right: 5px;
 	}
@@ -87,7 +89,7 @@ select, input {
 }
 
 .comment {
-	color: #FFFFFF;
+	color: $additional_color;
 	margin-bottom: 40px;
 	&_title {
 		margin-bottom: 10px;
@@ -106,27 +108,27 @@ select, input {
 	position: relative;
 	display: flex;
 	align-items: end;
-	height: 110px;
+	height: 130px;
 	#submit {
 		width: 200px;
 		height: 80px;
 		border-radius: 10px; 
 		font-size: 25px;
 		font-weight: 700;
-		border: 1px solid #000000;
+		border: 1px solid $accent_color;
 		user-select: none;
 		transition: 3s all;
 	}
 	.active_btn {
-		background: #000000;
-		color: #FFFFFF;
+		background: $accent_color;
+		color: $additional_color;
 		&:hover {
-			color:#0077FF;
+			color:$main_color;
 		}
 	}
 	.non-active_btn {
-		background: #0077FF;
-		color: #000000;
+		background: $main_color;
+		color: $accent_color;
 	}
 	#clean {
 		width: 100px;
@@ -134,14 +136,14 @@ select, input {
 		border-radius: 10px;
 		margin-left: 20px;
 		font-weight: 700;
-		border: 1px solid #FFFFFF;
-		background: #FFFFFF;
-		color: #000000;
+		border: 1px solid $additional_color;
+		background: $additional_color;
+		color: $accent_color;
 		user-select: none;
 		transition: 2s all;
 		&:hover {
-			color: #FFFFFF;
-			background: #0077FF;
+			color: $additional_color;
+			background: $main_color;
 		}
 	}
 }
@@ -150,7 +152,7 @@ select, input {
 	position: absolute;
 	top: 0;
 	font-size: 14px;
-	color: #000000;
+	color: $accent_color;
 	font-weight: 400;
 }
 
@@ -158,3 +160,4 @@ select, input {
 	display: none;
 }
 
+@import '_media';

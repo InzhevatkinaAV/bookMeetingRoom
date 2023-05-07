@@ -6,7 +6,7 @@ export function checkFields(selectTown, selectFloor, selectRoom, inputDate, time
 		selectRoom.value !== 'default' && inputDate.value && timeInterval.value != 'default');
 }
 
-//Возвращение значения всех select'ов в значение по-умолчанию, очистка списка их возможных значений.
+//Возвращение значений всех select'ов в значение по-умолчанию, очистка списка их возможных значений.
 //Перевод select'а выбора интервала времени в неактивное состояние.
 export function cleanFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment) {
 	selectTown.value = 'default';
