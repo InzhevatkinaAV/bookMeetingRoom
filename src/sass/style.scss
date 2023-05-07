@@ -43,6 +43,7 @@ select, input {
     background: #FFFFFF;
     border: none;
     transition: 1s all;
+    cursor: pointer;
 }
 
 .place {
@@ -52,6 +53,9 @@ select, input {
     width: 900px;
     color: #FFFFFF;
     margin-bottom: 30px;
+    &_title {
+        margin-right: 5px;
+    }
     #town {
         width: 200px;
     }
@@ -64,6 +68,9 @@ select, input {
     width: 900px;
     color:#FFFFFF;
     margin-bottom: 40px;
+    &_title {
+        margin-right: 5px;
+    }
     #date {
         width: 200px;
     }

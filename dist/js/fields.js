@@ -24,7 +24,7 @@ export function cleanFields(selectTown, selectFloor, selectRoom, inputDate, time
     textareaComment.value = '';
 }
 
-function cleanSelect(select) {
+export function cleanSelect(select) {
     while (select.childNodes.length > 1)
         select.removeChild(select.lastChild);
 
@@ -66,4 +66,21 @@ export function unblokFields(selectTown, selectFloor, selectRoom, inputDate, tim
     timeInterval.style.pointerEvents = '';
 
     textareaComment.removeAttribute('readonly');
+}
+
+export function switchTitles(flag) {
+    const placeTitle = document.querySelector('.place_title');
+    const dateAndTimeTitle = document.querySelector('.date_and_time_title');
+
+    if (flag) {
+        placeTitle.innerHTML = 'Выбранное место:';
+        dateAndTimeTitle.innerHTML = 'Выбранное время:';
+        placeTitle.style.marginRight = '0px';
+        dateAndTimeTitle.style.marginRight = '0px';
+    } else {
+        placeTitle.innerHTML = '*Выберете место:';
+        dateAndTimeTitle.innerHTML = '*Выберете время:';
+        placeTitle.style.marginRight = '5px';
+        dateAndTimeTitle.style.marginRight = '5px';
+    }
 }

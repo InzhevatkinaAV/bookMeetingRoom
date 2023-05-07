@@ -1,8 +1,9 @@
+import { cleanSelect } from "./fields.js";
+
 const towns = ['А', 'B'];
 const startFloor = 3;
 const lastFloor = 27;
 const countOfRooms = 10;
-
 const timeIntervals = {
     '07:00 - 08:00': 'свободно',
     '08:00 - 09:00': 'свободно',
@@ -22,29 +23,6 @@ const timeIntervals = {
     '22:00 - 23:00': 'свободно',
 }
 
-export function init(selectTown, selectFloor, selectRoom, inputDate) {
-    initSelectTown(selectTown);
-    initSelectFloor(selectFloor);
-    initSelectRooms(selectRoom);
-    
-    setMinMaxDate(inputDate);
-}
-
-let currentDate = new Date();
-
-function setMinMaxDate(inputDate) {
-    currentDate = new Date();
-
-    const maxDate = new Date();
-    maxDate.setMonth(maxDate.getMonth() + 6);
-
-    const dateMin = getFormattedDate(currentDate).slice(0, 3).reverse().join('-');
-    inputDate.min = dateMin;
-
-    const dateMax = getFormattedDate(maxDate).slice(0, 3).reverse().join('-');
-    inputDate.max = dateMax;
-}
-
 const formatter = new Intl.DateTimeFormat('RU', {
     day: '2-digit',
     month: '2-digit',
@@ -53,11 +31,15 @@ const formatter = new Intl.DateTimeFormat('RU', {
     minute: '2-digit',
 });
 
-function getFormattedDate(date) {
-    const formattedDate = formatter.format(date);
-    const arrayDate = formattedDate.replace(/[^0-9]/gi, ' ').split(' ').filter(e => e != '');
+let currentDate = new Date();
 
-    return arrayDate;
+
+export function init(selectTown, selectFloor, selectRoom, inputDate) {
+    initSelectTown(selectTown);
+    initSelectFloor(selectFloor);
+    initSelectRooms(selectRoom);
+    
+    setMinMaxDate(inputDate);
 }
 
 function initSelectTown(selectTown) {
@@ -87,14 +69,41 @@ function initSelectRooms(selectRoom) {
     }
 }
 
+function setMinMaxDate(inputDate) {
+    currentDate = new Date();
+
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 6);
+
+    const dateMin = getFormattedDate(currentDate).slice(0, 3).reverse().join('-');
+    inputDate.min = dateMin;
+
+    const dateMax = getFormattedDate(maxDate).slice(0, 3).reverse().join('-');
+    inputDate.max = dateMax;
+}
+
+function getFormattedDate(date) {
+    const formattedDate = formatter.format(date);
+    const arrayDate = formattedDate.replace(/[^0-9]/gi, ' ').split(' ').filter(e => e != '');
+
+    return arrayDate;
+}
+
 export function initTimeInterval(timeInterval, inputDate) {
+    cleanSelect(timeInterval);
+
     const inputDay = Number(inputDate.value.split('-')[2]);
     const inputMonth = Number(inputDate.value.split('-')[1]);
-
-    cleanTimeInterval(timeInterval);
+    
+    currentDate = new Date();
+    const currentDay = currentDate.getDate();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentHours = currentDate.getHours();
+    const currentMinuts = currentDate.getMinutes();
 
     for (let interval in timeIntervals) {
-        if (!futureTime(interval, inputDay, inputMonth)) continue;
+        if (pastTime(interval, inputDay, inputMonth, currentDay, currentMonth, currentHours, currentMinuts)) 
+            continue;
 
         const option = document.createElement('option');
 
@@ -114,23 +123,14 @@ export function initTimeInterval(timeInterval, inputDate) {
     timeInterval.classList.add('active_time');
 }
 
-function cleanTimeInterval(timeInterval) {
-    while (timeInterval.childNodes.length > 1)
-        timeInterval.removeChild(timeInterval.lastChild);
-
-    const select = timeInterval.getElementsByTagName('option');
-    select[0].selected = true;
-}
-
-function futureTime(interval, inputDay, inputMonth) {
+function pastTime(interval, inputDay, inputMonth, currentDay, currentMonth, currentHours, currentMinuts) {
     const endInterval = Number(interval.split(' ')[2].split(':')[0]);
-  
-    if (inputDay == currentDate.getDate() && inputMonth == currentDate.getMonth() + 1) {
-        const currentHours = currentDate.getHours();
-        const currentMinuts = currentDate.getMinutes();
 
-        return currentHours < endInterval && currentMinuts < 50;
-    }
+    if (inputDay === currentDay && inputMonth === currentMonth && currentHours > endInterval)
+        return true;
 
-    return true;
+    if (inputDay === currentDay && inputMonth === currentMonth && currentHours + 1 === endInterval)
+        return currentMinuts > 50;
+
+    return false;
 }

@@ -42,7 +42,7 @@ export class Request {
         return this.time;
     }
 
-    static show(request) {
+    static getJSON(request) {
         console.log(JSON.stringify(request));
-    }
+    }   
 }

@@ -1,6 +1,6 @@
 import {init, initTimeInterval} from './initial.js';
 import { Request } from './Request.js';
-import {checkFields, blokFields, unblokFields, cleanFields} from './fields.js';
+import {checkFields, blokFields, unblokFields, cleanFields, switchTitles} from './fields.js';
 import {showHelpMessage, hiddenMessage, showConfirmMessage} from './messages.js';
 
 const selectTown = document.getElementById('town');
@@ -16,7 +16,7 @@ const buttonSubmit = document.getElementById('submit');
 const buttonClean = document.getElementById('clean');
 
 
-init(selectTown, selectFloor, selectRoom, inputDate, timeInterval);
+init(selectTown, selectFloor, selectRoom, inputDate);
 
 inputDate.addEventListener('change', function() {
     initTimeInterval(timeInterval, inputDate);
@@ -24,28 +24,29 @@ inputDate.addEventListener('change', function() {
 
 buttonSubmit.addEventListener('click', function() {
     if (checkFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval)) {
+        switchTitles(true);
+
         const request = new Request(selectTown.value, selectFloor.value, selectRoom.value, inputDate.value, timeInterval.value, textareaComment.value);
-        Request.show(request);
+        Request.getJSON(request);
 
         blokFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment);
-
         showConfirmMessage(request);
 
         changeButtonSubmit('active_btn', 'non-active_btn', true);
-    } else {
+    } else 
         showHelpMessage([selectTown, selectFloor, selectRoom, inputDate, timeInterval]);
-    }
 });
 
 buttonClean.addEventListener('click', function() {
+    switchTitles(false);
+
     cleanFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment);
+    init(selectTown, selectFloor, selectRoom, inputDate);
     unblokFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment);
 
     hiddenMessage();
 
     changeButtonSubmit('non-active_btn', 'active_btn', false);
-
-    init(selectTown, selectFloor, selectRoom, inputDate, timeInterval);
 });
 
 function changeButtonSubmit(removeClass, addClass, disabled) {
