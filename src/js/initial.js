@@ -1,9 +1,13 @@
+//Функции инициализации полей.
+
 import { cleanSelect } from "./fields.js";
 
+//Значения взяты из условий задачи.
 const towns = ['А', 'B'];
 const startFloor = 3;
 const lastFloor = 27;
 const countOfRooms = 10;
+//Сделано предположение, что доступно почасовое бронирование переговорной комнаты. 
 const timeIntervals = {
 	'07:00 - 08:00': 'свободно',
 	'08:00 - 09:00': 'свободно',
@@ -33,6 +37,8 @@ const formatter = new Intl.DateTimeFormat('RU', {
 
 let currentDate = new Date();
 
+//Инициализация select'ов с выбором башни, этажа, комнаты, 
+//и input'а с выбором даты.
 export function init(selectTown, selectFloor, selectRoom, inputDate) {
 	initSelectTown(selectTown);
 	initSelectFloor(selectFloor);
@@ -68,9 +74,12 @@ function initSelectRooms(selectRoom) {
 	}
 }
 
+//Установка допустимого диапазона в input'е с выбором даты.
 function setMinMaxDate(inputDate) {
 	currentDate = new Date();
 
+	//Сделано допущение, что бронировать переговорную комнату можно не ранее, 
+	//чем за 6 месяцев до переговоров.
 	const maxDate = new Date();
 	maxDate.setMonth(maxDate.getMonth() + 6);
 
@@ -81,6 +90,7 @@ function setMinMaxDate(inputDate) {
 	inputDate.max = dateMax;
 }
 
+//Получение даты в удобном для парсинга формате.
 function getFormattedDate(date) {
 	const formattedDate = formatter.format(date);
 	const arrayDate = formattedDate.replace(/[^0-9]/gi, ' ').split(' ').filter(e => e != '');
@@ -88,6 +98,8 @@ function getFormattedDate(date) {
 	return arrayDate;
 }
 
+//Формирование выпадающего списка интервалов в select'е выбора интервалов.
+//Происходит после выбора допустимой даты.
 export function initTimeInterval(timeInterval, inputDate) {
 	cleanSelect(timeInterval);
 
@@ -102,11 +114,13 @@ export function initTimeInterval(timeInterval, inputDate) {
 	const currentMinuts = currentDate.getMinutes();
 
 	for (let interval in timeIntervals) {
+		//Интервал, который находится в прошлом времени, не отображается в списке доступных интервалов.
 		if (pastInterval(interval, inputDay, inputMonth,currentDay, currentMonth, currentHours, currentMinuts)) 
 			continue;
 
 		const option = document.createElement('option');
 
+		//Уже забронированные интервалы отображаются в списке как недоступные к выбору.
 		if (timeIntervals[interval] === 'занято') {
 			option.innerHTML = `${interval} ${timeIntervals[interval]}`;
 			option.disabled = true;
@@ -118,18 +132,22 @@ export function initTimeInterval(timeInterval, inputDate) {
 		timeInterval.append(option);
 	}
 
+	//После того, как сформирован список доступных интервалов времени на указанную дату,
+	//select с выбором интервалов становится доступным.
 	timeInterval.removeAttribute('readonly');
 	timeInterval.style.pointerEvents = '';
 	timeInterval.classList.remove('non-ative_time');
 	timeInterval.classList.add('active_time');
 }
 
+//Проверка: находится ли интервал времени в прошлом? 
 function pastInterval(interval, inputDay, inputMonth, currentDay, currentMonth, currentHours, currentMinuts) {
 	const endInterval = Number(interval.split(' ')[2].split(':')[0]);
 
 	if (inputDay === currentDay && inputMonth === currentMonth && currentHours >= endInterval)
 		return true;
 
+	//Сделано допущение, что бронировать интервал можно, если до его окончания осталось не менее 10 минут.
 	if (inputDay === currentDay && inputMonth === currentMonth && currentHours + 1 === endInterval)
 		return currentMinuts > 50;
 

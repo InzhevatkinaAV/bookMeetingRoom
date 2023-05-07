@@ -1,8 +1,13 @@
+//Функции для работы с полями.
+
+//Проверка: заполнены ли все обязательные к заполнению поля?
 export function checkFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval) {
 	return (selectTown.value !== 'default' && selectFloor.value !== 'default' &&
 		selectRoom.value !== 'default' && inputDate.value && timeInterval.value != 'default');
 }
 
+//Возвращение значения всех select'ов в значение по-умолчанию, очистка списка их возможных значений.
+//Перевод select'а выбора интервала времени в неактивное состояние.
 export function cleanFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment) {
 	selectTown.value = 'default';
 	cleanSelect(selectTown);
@@ -14,10 +19,9 @@ export function cleanFields(selectTown, selectFloor, selectRoom, inputDate, time
 	cleanSelect(selectRoom);
 
 	inputDate.value = '';
+	
 	timeInterval.value = 'default';
 	cleanSelect(timeInterval);
-
-	// timeInterval.disabled = true;
 	timeInterval.classList.remove('active_time');
 	timeInterval.classList.add('non-ative_time');
 
@@ -32,6 +36,7 @@ export function cleanSelect(select) {
 	option[0].selected = true;
 }
 
+//Перевод всех полей в состояние, недоступное для изменений.
 export function blokFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment) {
 	selectTown.setAttribute("readonly", true);
 	selectTown.style.pointerEvents = 'none';
@@ -51,14 +56,15 @@ export function blokFields(selectTown, selectFloor, selectRoom, inputDate, timeI
 	textareaComment.setAttribute("readonly", true);   
 }
 
+//Очистка и перевод select'а выбора интервала времени в состояние, недоступное для изменений. 
 export function blokTimeInterval(timeInterval) {
 	cleanSelect(timeInterval);
-
 	timeInterval.classList.remove('active_time');
 	timeInterval.classList.add('non-ative_time');
 	timeInterval.style.pointerEvents = 'none';
 }
 
+//Перевод всех полей в состояние, доступное для изменений.
 export function unblokFields(selectTown, selectFloor, selectRoom, inputDate, timeInterval, textareaComment) {
 	selectTown.removeAttribute('readonly');
 	selectTown.style.pointerEvents = '';
@@ -78,6 +84,7 @@ export function unblokFields(selectTown, selectFloor, selectRoom, inputDate, tim
 	textareaComment.removeAttribute('readonly');
 }
 
+//Изменение смысла подзаголовков.
 export function switchTitles(flag) {
 	const placeTitle = document.querySelector('.place_title');
 	const dateAndTimeTitle = document.querySelector('.date_and_time_title');
@@ -95,6 +102,7 @@ export function switchTitles(flag) {
 	}
 }
 
+//Проверка: выбрана ли дата, которая уже прошла?
 export function isPastTime(inputDate, timeInterval) {
 	const inputDay = Number(inputDate.value.split('-')[2]);
 	const inputMonth = Number(inputDate.value.split('-')[1]) - 1;
@@ -107,10 +115,11 @@ export function isPastTime(inputDate, timeInterval) {
 	const input = new Date(inputYear, inputMonth, inputDay);
 	const min = new Date(minYear, minMonth, minDay);
 
-	if (input < min)
-		return true;
+	return input < min;
 }
 
+//Проверка: выбрана ли дата, которая наступит более чем через 6 месяцев?
+//Сделано допущение, что бронировать переговорную комнату можно не ранее, чем за полгода.
 export function isFarFutureTime(inputDate) {
 	const inputDay = Number(inputDate.value.split('-')[2]);
 	const inputMonth = Number(inputDate.value.split('-')[1]) - 1;
@@ -123,6 +132,5 @@ export function isFarFutureTime(inputDate) {
 	const input = new Date(inputYear, inputMonth, inputDay);
 	const max = new Date(maxYear, maxMonth, maxDay);
 
-	if (input > max)
-		return true;
+	return input > max;
 }
